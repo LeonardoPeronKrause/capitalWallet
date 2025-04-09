@@ -1,0 +1,11 @@
+Dependencies Install
+
+- EXPRESS: Framework to create the HTTP server
+
+- CORS: Allow that frontend communicate with backend
+
+- DOTENV: Allow use environment variables with security
+
+- PG: Drive to connect with PostgreSQL
+
+- NODEMON: Restart automaticaly the server when the files are saved (only in development)

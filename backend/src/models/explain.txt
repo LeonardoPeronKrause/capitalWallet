@@ -1,0 +1,1 @@
+This models file is opcional, if you want to save SQL queries!
