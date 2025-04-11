@@ -4,7 +4,7 @@ import {
     createTransaction,
     deleteTransaction,
     editTransaction
-} from '../controllers/transactionsList';
+} from '../controllers/transactionsList.js';
 
 const router = express.Router() // express.Router() -> Works as a little-app for organize the routes separately
 
