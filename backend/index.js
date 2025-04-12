@@ -4,7 +4,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
-import transactionRoutes from './routes/transactionRoutes.js';
+import transactionRoutes from './src/routes/transactionRoutes.js';
 
 dotenv.config();
 

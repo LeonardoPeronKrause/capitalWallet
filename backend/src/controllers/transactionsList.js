@@ -22,7 +22,7 @@ const createTransaction = async (req, res) => {
 
         const query = `
         INSERT INTO transactions (type, description, value, date)
-        VALUES ($1, $2, $3, $4, $5)     -- ($1, $2...) its to avoid SQL INJECTION
+        VALUES ($1, $2, $3, $4)     -- ($1, $2...) its to avoid SQL INJECTION
         RETURNING *;  -- make the database return the created data
         `;
 
@@ -33,7 +33,7 @@ const createTransaction = async (req, res) => {
         const result = await pool.query(query, values);
         
         // Return that transaction was created with status 201
-        res.send(201).json(result.rows); 
+        res.status(201).json(result.rows); 
 
     } catch (err) {
         // If anything was wrong, shows the error on console        
@@ -45,8 +45,27 @@ const createTransaction = async (req, res) => {
 }
 
 const deleteTransaction = async (req, res) => {
+    const { id } = req.params; // Get the id from URL
 
-}
+    try {
+        const query = 'DELETE FROM transactions WHERE id = $1 RETURNING *;';
+        
+        // Using the pool to conect with database to makes the query run
+        const result = await pool.query(query, [id]); // [id] replace $1 with the actual ID value from the URL
+
+        // ID did not exist
+        if (result.rowCount === 0) { 
+            return res.status(404).json({ error: 'Transaction not found!' });
+        }
+
+        // Successfull message
+        res.status(200).json({ mesage: 'Transaction deleted successfully!' });
+
+    } catch (err) { // If any error occurs (ex: database down, invalid id), the catch block captures the error. 
+        console.error('Error when deleting transaction:', err);
+        res.status(500).json({ error: 'Error when deleting transaction' });
+    }
+};
 
 const editTransaction = async (req, res) => {
 
