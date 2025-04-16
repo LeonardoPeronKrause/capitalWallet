@@ -44,6 +44,7 @@ const createTransaction = async (req, res) => {
     }
 }
 
+// DELETE / transactions:id
 const deleteTransaction = async (req, res) => {
     const { id } = req.params; // Get the id from URL
 
@@ -67,13 +68,46 @@ const deleteTransaction = async (req, res) => {
     }
 };
 
-const editTransaction = async (req, res) => {
+// PUT / transactions:id
+const updateTransaction = async (req, res) => {
+    const { id } = req.params; // Get the id from URL
+    const { type, description, value, date } = req.body; // Get the new data of the requisition body
 
-}
+    try {
+        // Check if the values are valid!
+        if (!type || !value || !date) {
+            return res.status(400).json({ error: 'Type, Value and Date should be valid values!' });
+        }
+
+        // Criate the SQL query with placeholders to avoid SQL injection
+        const query = `
+            UPDATE transactions
+            SET type = $1, description = $2, value = $3, date = $4
+            WHERE id = $5
+            RETURNING *;
+        `;
+        // Defines the values that will replace the placeholders
+        const values = [ type, description, value, date, id ];
+
+        // Execute the query
+        const result = await pool.query(query, values);
+
+        // ID did not exist
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: 'Transaction not found!' });
+        }
+        
+        // Return the successfull on the transaction
+        res.status(200).json({ message: 'Transaction update!', transaction: result.rows[0] });
+    } catch (err) {
+        console.error('Error when updating transaction:', err);
+        res.status(500).json({ error: 'Error when updating transaction.' });
+    }
+};
 
 export {
     transactionsList,
     createTransaction,
     deleteTransaction,
-    editTransaction
+    updateTransaction
 };

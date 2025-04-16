@@ -3,7 +3,7 @@ import {
     transactionsList,
     createTransaction,
     deleteTransaction,
-    editTransaction
+    updateTransaction
 } from '../controllers/transactionsList.js';
 
 const router = express.Router() // express.Router() -> Works as a little-app for organize the routes separately
@@ -18,6 +18,6 @@ router.post('/', createTransaction); // When someone access POST /transaction, s
 router.delete('/:id', deleteTransaction); // When someone access DELETE /transactions/:id, should calls the deleteTransaction function
 
 // PUT - transactions/:id
-router.put('/:id', editTransaction);  // When someone access PUT /transactions/:id, should calls the editTransaction function
+router.put('/:id', updateTransaction);  // When someone access PUT /transactions/:id, should calls the updateTransaction function
 
 export default router; // Export the router to be use in the index.js
