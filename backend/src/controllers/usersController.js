@@ -1,6 +1,8 @@
+import jwt from 'jsonwebtoken'; // To generate a JWT token
 import bcrypt from 'bcrypt';
 import { pool } from '../database/connection.js';
 
+// Register User
 const registerUser = async (req, res) => {
     // Receive the data of frontend
     const { name, email, password } = req.body; 
@@ -35,4 +37,51 @@ const registerUser = async (req, res) => {
     }
 };
 
-export default registerUser;
+// User login
+const loginUser = async (req, res) => {
+
+    // Gets the email and password of the body requisition
+    const { email, password } = req.body;
+
+    try {
+        // Check if both was send
+        if (!email || !password) {
+            return res.status(400).json({ message: 'Email and password are required.'});
+        }
+
+        // Search user on database by email
+        const userResult = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+
+        // If dont have user with that email
+        if (userResult.rows.length === 0) {
+            return res.status(401).json({ error: 'Invalid email or password.'});
+        }
+
+        // Get the first (and only) user returned  
+        const user = userResult.rows[0];
+
+        // Compares the submitted password with the hash saved in the database 
+        const validPassword = await bcrypt.compare(password, user.password);
+
+        // If the password is incorrect
+        if (!validPassword) {
+            return res.status(401).json({ error: 'Invalid email or password.'});
+        }
+
+        // If you have reached this point, your email and password was correct
+        // Generates the JWT token with the user data (minus the password!)
+        const token = jwt.sign(
+            { id: user.id, name: user.name, email: user.email },
+            process.env.JWT_SECRET, // Secret key thats in the .env file
+            { expiresIn: '2h' } // token expiration time (2 hours)
+        );
+
+        // Return the token from frontend
+        return res.status(200).json({ message: 'Login seccessful!', token });
+    } catch (error) {
+        console.error('Login error:', error);
+        return res.status(500).json({ error: 'Internal server error.' });
+    }
+};
+
+export { registerUser, loginUser };

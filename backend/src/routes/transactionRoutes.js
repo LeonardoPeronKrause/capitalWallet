@@ -1,5 +1,5 @@
 import express from 'express';
-import registerUser from '../controllers/usersController.js';
+import { loginUser, registerUser } from '../controllers/usersController.js';
 import { 
     transactionsList,
     createTransaction,
@@ -20,8 +20,5 @@ router.delete('/:id', deleteTransaction); // When someone access DELETE /transac
 
 // PUT - transactions/:id
 router.put('/:id', updateTransaction);  // When someone access PUT /transactions/:id, should calls the updateTransaction function
-
-// POST - register
-router.post('/register', registerUser);
 
 export default router; // Export the router to be use in the index.js
