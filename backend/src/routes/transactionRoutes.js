@@ -1,24 +1,24 @@
 import express from 'express';
-import { loginUser, registerUser } from '../controllers/usersController.js';
 import { 
     transactionsList,
     createTransaction,
     deleteTransaction,
     updateTransaction
 } from '../controllers/transactionsList.js';
+import authMiddleware from '../middleware/authMiddleware.js';
 
-const router = express.Router() // express.Router() -> Works as a little-app for organize the routes separately
+const router = express.Router() // express.Router() -> Works as a mini-app to organize routes separately
 
-// GET - transactions
-router.get('/', transactionsList); // When someone access GET /transactions, should calls the transactionsList function
+// GET - List all transactions (Protected)
+router.get('/', authMiddleware, transactionsList); // GET /transactions, calls transactionsList only if authenticated
 
-// POST - transaction
-router.post('/', createTransaction); // When someone access POST /transaction, should calls the createTransaction function
+// POST - Create a transaction (Protected)
+router.post('/', authMiddleware, createTransaction); // POST /transaction, calls createTransaction only if authenticated
 
-// DELETE - transactions/:id
-router.delete('/:id', deleteTransaction); // When someone access DELETE /transactions/:id, should calls the deleteTransaction function
+// DELETE - Delete a transaction by ID (Protected)
+router.delete('/:id', authMiddleware, deleteTransaction); // DELETE /transactions/:id, calls deleteTransaction only if authenticated
 
-// PUT - transactions/:id
-router.put('/:id', updateTransaction);  // When someone access PUT /transactions/:id, should calls the updateTransaction function
+// PUT - Update transaction by ID (Protected)
+router.put('/:id', authMiddleware, updateTransaction);  // PUT /transactions/:id, calls updateTransaction only if authenticated
 
-export default router; // Export the router to be use in the index.js
+export default router; // Export the router to be used in index.js
