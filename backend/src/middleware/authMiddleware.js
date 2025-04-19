@@ -27,8 +27,8 @@ const authMiddleware = (req, res, next) => {
 
         // All good? Call next() to continue to the next middleware or protected route.
         next();
-    } catch (error) {
-        return res.status(403).json({ error: 'Token invalid or expired.' });
+    } catch (err) {
+        return res.status(403).json({ error: 'Invalid token.' });
     }
 };
 
