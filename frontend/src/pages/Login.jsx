@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import api from '../services/api';
+import './Login.css';
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -23,28 +24,27 @@ function Login() {
     };
 
     return (
-        <div style={{ padding: '5rem' }}>
-            <h2>Login</h2>
-            <form onSubmit={handleLogin}>
-                <div>
-                    <label>Email: </label>
-                    <input
-                        type='email'
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
+        <div className='login-container'>
+            <form className='login-form' onSubmit={handleLogin}>
+                <h1 className='login-title'>Capital Wallet</h1>
+                <p className='login-subtitle'>Controle seu patrimônio com confiança.</p>
+            
+                <label>Email:</label>
+                <input
+                    type='email'
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
 
-                <div>
-                    <label>Senha: </label>
-                    <input
-                        type='password'
-                        value={senha}
-                        onChange={(e) => setSenha(e.target.value)}
-                        required
-                    />
-                </div>
+            
+                <label>Senha:</label>
+                <input
+                    type='password'
+                    value={senha}
+                    onChange={(e) => setSenha(e.target.value)}
+                    required
+                />
 
                 <button type='submit'>Entrar</button>
             </form>
