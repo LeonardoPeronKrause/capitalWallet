@@ -1,4 +1,5 @@
 🧠 CapitalWallet – Estrutura do Projeto
+
 🎯 Visão Geral
 Plataforma web de gestão de finanças pessoais, com o objetivo de educar, organizar e empoderar financeiramente os usuários — especialmente no contexto brasileiro. O projeto terá:
 

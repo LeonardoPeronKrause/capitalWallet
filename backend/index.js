@@ -10,6 +10,7 @@ import userRoutes from './src/routes/userRoutes.js';
 dotenv.config();
 
 const app = express();
+
 app.use(cors());    // Allows comunication with the frontend
 app.use(express.json()); // Allow reading a JSON in the request body
 

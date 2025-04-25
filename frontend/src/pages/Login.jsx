@@ -4,22 +4,22 @@ import './Login.css';
 
 function Login() {
     const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
+    const [password, setPassword] = useState('');
 
     const handleLogin = async (e) => {
         e.preventDefault();
 
         try {
-            const resposta = await api.post('/login', {
+            const resposta = await api.post('/users/login', {
                 email,
-                senha
+                password
             });
 
            console.log('Logged in!', resposta.data);
 
             localStorage.setItem('token', resposta.data.token);
         } catch (erro) {
-            console.error('Login error: ' + erro.response?.data || erro.message);
+            console.error('Login error: ', erro.response?.data || erro.message);
         }
     };
 
@@ -41,8 +41,8 @@ function Login() {
                 <label>Senha:</label>
                 <input
                     type='password'
-                    value={senha}
-                    onChange={(e) => setSenha(e.target.value)}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     required
                 />
 
