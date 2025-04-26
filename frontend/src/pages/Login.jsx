@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import './Login.css';
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -15,9 +17,11 @@ function Login() {
                 password
             });
 
-           console.log('Logged in!', resposta.data);
+            console.log('Logged in!', resposta.data);
 
             localStorage.setItem('token', resposta.data.token);
+
+            navigate('/dashboard');
         } catch (erro) {
             console.error('Login error: ', erro.response?.data || erro.message);
         }
